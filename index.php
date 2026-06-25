@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student CRUD</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+    <div class="max-w-5xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-xs border border-gray-100">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <h1 class="text-xl font-semibold tracking-tight text-gray-900">Student List</h1>
+            <div class="flex gap-2">
+                <input type="text" id="search" placeholder="Search students..." class="px-3 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:border-gray-500 w-64">
+                <button onclick="openModal('add')" class="bg-gray-900 hover:bg-gray-800 text-white text-sm px-4 py-1.5 rounded transition cursor-pointer">Add Student</button>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                    <tr class="border-b border-gray-200 text-gray-500 font-medium">
+                        <th class="py-3 px-4">Name</th>
+                        <th class="py-3 px-4">Course</th>
+                        <th class="py-3 px-4">Year Level</th>
+                        <th class="py-3 px-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="studentTableBody" class="divide-y divide-gray-100">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="studentModal" class="hidden fixed inset-0 bg-black/30 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-md w-full p-6 border border-gray-100 shadow-xl">
+            <h3 id="modalTitle" class="text-lg font-medium text-gray-900 mb-4">Add Student</h3>
+            <form id="studentForm" onsubmit="saveStudent(event)">
+                <input type="hidden" id="studentId">
+                <div class="space-y-4 mb-6">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 uppercase mb-1">Full Name</label>
+                        <input type="text" id="studentName" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-gray-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 uppercase mb-1">Course</label>
+                        <input type="text" id="studentCourse" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-gray-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 uppercase mb-1">Year Level</label>
+                        <input type="text" id="studentYear" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-gray-500">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 text-sm">
+                    <button type="button" onclick="closeModal('studentModal')" class="px-4 py-2 border border-gray-200 text-gray-600 rounded hover:bg-gray-50 cursor-pointer">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 cursor-pointer">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="hidden fixed inset-0 bg-black/30 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-sm w-full p-6 border border-gray-100 shadow-xl">
+            <h3 class="text-lg font-medium text-gray-900 mb-2">Delete Student</h3>
+            <p class="text-sm text-gray-500 mb-6">Are you sure you want to remove this record? This action cannot be undone.</p>
+            <div class="flex justify-end gap-2 text-sm">
+                <button onclick="closeModal('deleteModal')" class="px-4 py-2 border border-gray-200 text-gray-600 rounded hover:bg-gray-50 cursor-pointer">Cancel</button>
+                <button id="confirmDeleteBtn" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
