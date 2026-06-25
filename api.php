@@ -1,5 +1,6 @@
 <?php
 header("Content-Type: application/json");
+
 require_once 'database.php';
 require_once 'student.php';
 
@@ -14,43 +15,49 @@ if ($action === 'read') {
 } 
 
 elseif ($action === 'create') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    if (!empty($data['student_name']) && !empty($data['course']) && !empty($data['year_level'])) {
+    if (!empty($_POST['student_name']) && !empty($_POST['course']) && !empty($_POST['year_level'])) {
         
 
-        $student->student_name = $data['student_name'];
-        $student->course = $data['course'];
-        $student->year_level = $data['year_level'];
+        $student->student_name = $_POST['student_name'];
+        $student->course       = $_POST['course'];
+        $student->year_level   = $_POST['year_level'];
         
-        echo json_encode(["success" => $student->create()]);
+
+        $result = $student->create();
+        echo json_encode(["success" => $result]);
     } else {
         echo json_encode(["success" => false, "message" => "All fields required"]);
     }
 } 
 
+
 elseif ($action === 'update') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    if (!empty($data['id']) && !empty($data['student_name']) && !empty($data['course']) && !empty($data['year_level'])) {
+
+    if (!empty($_POST['id']) && !empty($_POST['student_name']) && !empty($_POST['course']) && !empty($_POST['year_level'])) {
         
-        $student->id = $data['id'];
-        $student->student_name = $data['student_name'];
-        $student->course = $data['course'];
-        $student->year_level = $data['year_level'];
+        $student->id           = $_POST['id'];
+        $student->student_name = $_POST['student_name'];
+        $student->course       = $_POST['course'];
+        $student->year_level   = $_POST['year_level'];
         
-        echo json_encode(["success" => $student->update()]);
+        $result = $student->update();
+        echo json_encode(["success" => $result]);
     } else {
-        echo json_encode(["success" => false]);
+        echo json_encode(["success" => false, "message" => "Missing update information"]);
     }
 } 
 
+
 elseif ($action === 'delete') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    if (!empty($data['id'])) {
+
+    if (!empty($_POST['id'])) {
         
-        $student->id = $data['id'];
-        echo json_encode(["success" => $student->delete()]);
+        $student->id = $_POST['id'];
+
+        $result = $student->delete();
+        echo json_encode(["success" => $result]);
     } else {
-        echo json_encode(["success" => false]);
+        echo json_encode(["success" => false, "message" => "ID required for deletion"]);
     }
 }
 ?>

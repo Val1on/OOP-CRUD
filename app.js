@@ -67,19 +67,19 @@ function closeModal(modalId) {
 
 async function saveStudent(e) {
     e.preventDefault();
+    
     const id = document.getElementById("studentId").value;
-    const payload = {
-        id: id ? parseInt(id) : null,
-        student_name: document.getElementById("studentName").value,
-        course: document.getElementById("studentCourse").value,
-        year_level: document.getElementById("studentYear").value
-    };
-
     const action = id ? 'update' : 'create';
+
+    const formData = new FormData();
+    if (id) formData.append('id', id);
+    formData.append('student_name', document.getElementById("studentName").value);
+    formData.append('course', document.getElementById("studentCourse").value);
+    formData.append('year_level', document.getElementById("studentYear").value);
+
     const res = await fetch(`api.php?action=${action}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: formData
     });
     
     const result = await res.json();
@@ -92,10 +92,12 @@ async function saveStudent(e) {
 async function confirmDelete() {
     if (!deleteTargetId) return;
     
+    const formData = new FormData();
+    formData.append('id', deleteTargetId);
+
     const res = await fetch(`api.php?action=delete`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: deleteTargetId })
+        body: formData
     });
 
     const result = await res.json();
